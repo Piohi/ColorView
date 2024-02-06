@@ -8,9 +8,8 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    private var redValue: CGFloat = 0.5
-    private var greenValue: CGFloat = 0.5
-    private var blueValue: CGFloat = 0.5
+    
+    @IBOutlet var vievForColor: UIView!
     
     @IBOutlet var redSliderValue: UILabel!
     @IBOutlet var greenSliderValue: UILabel!
@@ -20,45 +19,51 @@ final class ViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
-    @IBOutlet var vievForColor: UIView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSliders()
-        updateViewColor()
-        vievForColor.layer.cornerRadius = vievForColor.frame.height / 4
+        vievForColor.layer.cornerRadius = 15
+        
+        setColor()
+        
+        redSliderValue.text = string(from: redSlider)
+        greenSliderValue.text = string(from: greenSlider)
+        blueSliderValue.text = string(from: blueSlider)
     }
     
     private func setupSliders() {
-        redSlider.minimumValue = 0
-        greenSlider.minimumValue = 0
-        blueSlider.minimumValue = 0
-        redSlider.maximumValue = 1
-        greenSlider.maximumValue = 1
-        blueSlider.maximumValue = 1
         redSlider.minimumTrackTintColor = .red
         greenSlider.minimumTrackTintColor = .green
         blueSlider.minimumTrackTintColor = .blue
     }
     
-    @IBAction func redSliderAction(_ sender: UISlider) {
-        redValue = CGFloat(Float(redSlider.value) / Float(redSlider.maximumValue))
-        redSliderValue.text = String(format: "%.2f", redSlider.value)
-        updateViewColor()
-    }
-    @IBAction func greenSliderAction(_ sender: UISlider) {
-        greenValue = CGFloat(Float(greenSlider.value) / Float(greenSlider.maximumValue))
-        greenSliderValue.text = String(format: "%.2f", greenSlider.value)
-        updateViewColor()
-    }
-    @IBAction func blueSliderAction(_ sender: UISlider) {
-        blueValue = CGFloat(Float(blueSlider.value) / Float(blueSlider.maximumValue))
-        blueSliderValue.text = String(format: "%.2f", blueSlider.value)
-        updateViewColor()
+    @IBAction func sliderAction(_ sender: UISlider) {
+        
+        switch sender {
+        case redSlider:
+            redSliderValue.text = string(from: redSlider)
+        case greenSlider:
+            greenSliderValue.text = string(from: greenSlider)
+        default:
+            blueSliderValue.text = string(from: blueSlider)
+        }
+        setColor()
     }
     
-    func updateViewColor() {
-        vievForColor.backgroundColor = UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1)
+   
+    private func setColor() {
+        vievForColor.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1
+        )
+    }
+    
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
 }
 
